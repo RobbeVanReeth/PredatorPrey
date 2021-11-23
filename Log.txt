@@ -1,0 +1,8 @@
+Done:
+    Setup Predator
+    Setup Pray
+    Setup start of the env
+    Setup the step function
+
+TODO:
+    Reproduce, checks when to kill/spawn
