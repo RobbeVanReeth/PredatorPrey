@@ -1,6 +1,7 @@
 import random
 
 
+
 class Hunter:
     """
        Properties: Age(0-50), 2D position, Birth-rate, Max-age
@@ -10,17 +11,18 @@ class Hunter:
            - Checks if it reached its maximum age, if so -> kill
        """
 
-    def __init__(self, energyLevel, age, posX, posY, maxAge, reproduceEnergy, energyPerPrayEaten,
-                 width, height):
+    def __init__(self, energyLevel, age, maxAge, reproduceEnergy, energyPerPrayEaten,
+                 width, height, env):
         self.energyLevel = energyLevel
         self.reproduceEnergy = reproduceEnergy
         self.age = age
-        self.positionX = posX
-        self.positionY = posY
+        self.positionX = random.randint(0, width)
+        self.positionY = random.randint(0, height)
         self.maxAge = maxAge
         self.energyPerPrayEaten = energyPerPrayEaten
         self.width = width
         self.height = height
+        self.env = env
 
     def eatPray(self):
         self.energyLevel += self.energyPerPrayEaten
@@ -78,21 +80,16 @@ class Hunter:
         return self.energyLevel
 
     def reproduceCheck(self):
-        """
-        TODO: Check when to reproduce (close to other hunter?)
 
-        """
         if self.getEnergy() >= self.reproduceEnergy:
             self.reproduce()
 
-    def breed(self):
-        """
-        TODO: Spawn offspring
-        """
-        pass
+    def eat(self):
+        self.energyLevel += self.energyPerPrayEaten
+        print(f"NOMNOMNOM, energy level is now:{self.energyLevel}")
 
     def reproduce(self):
-        self.breed()
+        pass
 
     def checkAge(self):
         if self.age == self.maxAge:
@@ -122,3 +119,7 @@ class Hunter:
         if self.checkEnergy():
             return False
         return True
+
+    def printInfo(self):
+        print(f"Age: {self.age} Location: {self.getPosX()},{self.getPosY()}")
+

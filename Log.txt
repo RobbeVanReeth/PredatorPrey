@@ -6,3 +6,7 @@ Done:
 
 TODO:
     Reproduce, checks when to kill/spawn
+
+
+TODO:
+    Check removal of items in list.
