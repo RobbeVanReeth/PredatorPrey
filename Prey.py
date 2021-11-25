@@ -10,15 +10,16 @@ class Prey:
         - Checks if it reached its maximum age, if so -> kill
     """
 
-    def __init__(self, age, posX, posY, birthrate, maxAge,
-                 width, height):
+    def __init__(self, age, birthrate, maxAge,
+                 width, height, env):
         self.age = age
-        self.positionX = posX
-        self.positionY = posY
+        self.positionX = random.randint(0, width)
+        self.positionY = random.randint(0, height)
         self.birthrate = birthrate
         self.maxAge = maxAge
         self.width = width
         self.height = height
+        self.env = env
 
     def moveRandomly(self):
         direction = random.randint(0, 3)
@@ -82,18 +83,22 @@ class Prey:
 
         self.age += 1
         self.moveRandomly()
-        breed = self.checkBreed()
+        if self.checkBreed():
+            self.env.breed()
         if self.checkAge():
-            return False, breed
-
-        return True, breed
+            print("Self age checked; positive to die")
+            return False
+        return True
 
     def checkBreed(self):
         """
         If random number is lower than birthrate -> breed
         :return: Breed Boolean
         """
-        randomNumber = round(random.random()*100)
+        randomNumber = random.random()*100
         if randomNumber < self.birthrate:
             return True
         return False
+
+    def printInfo(self):
+        print(f"Age: {self.age} Location: {self.getPosX()},{self.getPosY()}")

@@ -6,65 +6,60 @@ class Environment:
     def __init__(self):
         self.predators = []
         self.preys = []
-        self.locationsPrey = []
-        self.locationsPredator = []
 
     def breed(self):
-        self.addPrey(prey=prey(age=1, birthrate=17, maxAge=20, width=200, height=200, env=self))
+        self.addPrey(prey=prey(age=1, birthrate=1, maxAge=6, width=200, height=200, env=self))
 
-    def getPredatorAtLocation(self,x,y):
-        for i in range(len(self.predators)):
-            if self.predators[i].positionX == x and self.predators[i].positionY == y:
-                return self.predators[i]
-        return None
-
-    def getPreyAtLocation(self, x, y):
-        """
-        Returns prey from certain location x, y
-        :param x: X location of prey
-        :param y: Y location of prey
-        :return: prey if present
-        """
-        i = 0
-        for p in self.preys:
-            i += 1
-            if p.positionX == x and p.positionY == y:
-                return p, i
+    def getPredatorAtLocation(self, x, y):
+        for pr in self.predators:
+            if pr.positionX == x and pr.positionY == y:
+                return pr
         return None
 
     def printLocationsPrey(self):
-        for i in range(len(self.locationsPrey)):
-            print(self.locationsPrey[i])
+        for pr in self.preys:
+            print(f"{pr.positionX}, {pr.positionY}")
 
     def addPredator(self, predator):
         self.predators.append(predator)
-        self.locationsPredator.append((predator.positionX, predator.positionY))
 
     def removePrey(self, prey):
-        self.locationsPrey.remove(prey)
         self.preys.remove(prey)
 
     def addPrey(self, prey):
         self.preys.append(prey)
-        self.locationsPrey.append((prey.positionX, prey.positionY))
 
-    def isCloseToPrey(self, posX, posY):
-        for x, y in self.locationsPrey:
-            if x != posX and y != posY:
-                if abs(x - posX) <= 1:
-                    if abs(y - posY) <= 1:
-                        print(f"Found prey at location:{x},{y}, I'm at {posX},{posY}")
-
-                        return True
+    def getPreyAtLocation(self, x, y):
+        """
+        Finds and removes prey at location x,y
+        :param x:
+        :param y:
+        :return:
+        """
+        for pr in self.preys:
+            if pr.positionX == x and pr.positionY == y:
+                print("Position found")
+                self.preys.remove(pr)
+                return True
+        print("Prey not found, not gonna remove.")
         return False
 
+    def isCloseToPrey(self, posX, posY):
+        for pr in self.preys:
+            if pr.positionX != posX and pr.positionY != posY:
+                if abs(pr.positionX - posX) <= 3:
+                    if abs(pr.positionY - posY) <= 3:
+                        print(f"Found prey at location:{pr.positionX},{pr.positionY}, I'm at {posX},{posY}")
+                        return pr.positionX, pr.positionY
+        return None, None
+
     def isCloseToPredator(self, posX, posY):
-        for x, y in self.locationsPredator:
-            if x != posX and y != posY:
-                if abs(x - posX) <= 1:
-                    if abs(y - posY) <= 1:
-                        print(f"Found mating partner at:{x},{y}, I'm at {posX},{posY}")
-                        return x, y
+        for pr in self.predators:
+            if pr.positionX != posX and pr.positionY != posY:
+                if abs(pr.positionX - posX) <= 4:
+                    if abs(pr.positionY - posY) <= 4:
+                        print(f"Found mating partner at:{pr.positionX},{pr.positionY}, I'm at {posX},{posY}")
+                        return pr.positionX, pr.positionY
         return None, None
 
     def getPredator(self, i):
@@ -86,5 +81,5 @@ class Environment:
             return False
 
     def breedPredators(self):
-        self.addPredator(predator=pred(energyLevel=10, age=1, maxAge=50, reproduceEnergy=10,
+        self.addPredator(predator=pred(energyLevel=100, age=1, maxAge=50, reproduceEnergy=10,
                                            energyPerPrayEaten=20, width=200, height=200, env=self))
